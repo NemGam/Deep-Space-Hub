@@ -8,10 +8,13 @@
     box-sizing: border-box;
     border-radius: 20px;
     color: white;
+    display: flex;
+    flex-direction: column;
 }
 
-.post h5{
-    color: var(--text-sec-color);
+.gravityCounter{
+    margin-top: auto;
+    width: 110px;
 }
 
 .post:hover{
