@@ -1,24 +1,25 @@
-
 .post{
-    background-color: #4A61A4;
+    background-color: var(--primary-color);
     width: 100%;
-    height: 200px;
+    min-height: 200px;
+    height: auto;
+    max-height: 300px;
     padding: 20px;
     box-sizing: border-box;
     border-radius: 20px;
     color: white;
 }
 
-.post, a.post:visited{
-    cursor: pointer;
-    color: unset;
+.post h5{
+    color: var(--text-sec-color);
 }
 
-a.post:hover{
+.post:hover{
     color: unset;
     background-color: red;
 }
 
-.post h2{
+.post h2, .post h5{
     margin-top: 0;
+    margin-bottom: 0;
 }

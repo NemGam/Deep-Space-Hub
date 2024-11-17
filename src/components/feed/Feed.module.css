@@ -5,6 +5,23 @@
     justify-content: center;
 }
 
+.addPost{
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    border-radius: 30px;
+    width: 60px;
+    height: 60px;
+    font-weight: bold;
+    background-color: var(--primary-color);
+    text-align: center;
+    line-height: 55px;
+    font-size: 30px;
+}
+
+.addPost:hover{
+    filter: brightness(80%);
+}
 
 .feed{
     display: flex;
@@ -12,6 +29,6 @@
     flex-direction: column;
     gap: 30px;
     background-color: #2E1B49;
-    width: 80%;
+    width: 60%;
     align-content: center;
 }
