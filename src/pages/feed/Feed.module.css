@@ -29,6 +29,7 @@
     flex-direction: column;
     gap: 30px;
     background-color: #2E1B49;
-    width: 60%;
+    width: 50%;
+    min-width: 150px;
     align-content: center;
 }
