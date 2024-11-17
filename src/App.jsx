@@ -1,5 +1,7 @@
+import { Route, useRoutes } from 'react-router-dom';
 import styles from './App.module.css'
 import Feed from './components/feed/Feed'
+import Header from './components/header/Header';
 
 function App() {
     const posts = [
@@ -26,12 +28,19 @@ function App() {
         },
     ];
 
+    const routes = useRoutes([
+        {
+            path: "/",
+            element: <Feed posts={posts} />,
+        },
+    ]);
+
     return (
         <>
             <div className={styles.app}>
-                <Feed posts={posts} />
+                {routes}
             </div>
-            
+
         </>
     )
 }
