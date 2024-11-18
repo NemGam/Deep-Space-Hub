@@ -1,9 +1,15 @@
 //Converts timestamp into the readable date
 const convertRelative = (timestamp) => {
+
+    if (!timestamp) return;
+    const isoTimestamp = timestamp.replace(" ", "T");
+    const unixTimestamp = Math.floor(new Date(isoTimestamp).getTime() / 1000);
+
+
     const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
     const now = new Date();
-    const diffInSeconds = Math.round((timestamp * 1000 - now) / 1000);
+    const diffInSeconds = Math.round((unixTimestamp * 1000 - now) / 1000);
 
     const intervals = [
         { unit: "year", seconds: 31536000 },
