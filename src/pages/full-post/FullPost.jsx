@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import styles from "./FullPost.module.css";
 import { useEffect, useState } from "react";
 import GravityCounter from "../../components/gravity-counter/GravityCounter";
@@ -11,6 +11,7 @@ import { usePost } from "../../hooks/usePost";
 
 export default function FullPost() {
     const { postId } = useParams();
+    const navigate = useNavigate();
     const {post, setPost} = usePost();
     const [gravity, setGravity] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
@@ -79,6 +80,11 @@ export default function FullPost() {
         setNewComment("");
     }
 
+    const handleDeletePost = async () => {
+        await databaseService.deletePost(postId);
+        navigate("/");
+    }
+
     //Load comments
 
     return (
@@ -105,6 +111,7 @@ export default function FullPost() {
                                     <GravityCounter gravity={gravity} isLoading={isGravityChangeLoading} onUpvote={() => updateGravity(1)} />
                                     <div className={styles.manipulateButtons}>
                                         <Link to="../edit" relative="path"><button><FontAwesomeIcon icon={faEdit} /></button></Link>
+                                        <button onClick={handleDeletePost}><FontAwesomeIcon icon={faTrash}/></button>
                                     </div>
                                 </div>
                             </div>

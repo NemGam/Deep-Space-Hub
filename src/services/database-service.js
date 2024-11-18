@@ -46,6 +46,7 @@ const updatePost = async (id, title, content, img_url) => {
 
 const deletePost = async (id) => {
     const response = await supabase.from('Posts').delete().eq('id', id);
+    console.log(response);
     return response;
 }
 
