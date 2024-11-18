@@ -3,11 +3,12 @@
     height: 100%;
     background-color: red;
     display: flex;
-    padding: 30px 100px;
+    padding: 30px 80px;
     flex-direction: column;
     background-color: #2E1B49;
     width: 60%;
     align-content: center;
+    min-height: 300px;
 }
 
 .user > *{
@@ -39,9 +40,15 @@
 }
 
 .title{
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .post h1{
     font-size: 2.2rem;
+}
+
+.content{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }

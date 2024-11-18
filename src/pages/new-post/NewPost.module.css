@@ -1,0 +1,62 @@
+.post {
+    width: 30%;
+    height: 100%;
+   
+    padding: 30px 180px;
+    box-sizing: border-box;
+    flex-direction: column;
+    background-color: #2E1B49;
+    width: 60%;
+    align-content: center;
+    text-align: center;
+    min-height: 200px;
+    border-radius: 10px;
+}
+
+.postWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.post h1 {
+    margin-top: 0;
+}
+
+.titleInput, .contentInput, .imgUrlInput {
+    font-size: 22px;
+    width: 100%;
+    
+    text-align: left;
+    margin-top: 10px;
+    
+}
+
+.titleInput input, .imgUrlInput input{
+    height: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.contentInput textarea{
+    height: 160px;
+    width: 100%;
+    resize: vertical;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.postButton{
+    width: 100px;
+    height: 40px;
+}
+
+.form{
+    justify-content: left;
+    flex-direction: column;
+    display: flex;
+    gap: 60px;
+}
+

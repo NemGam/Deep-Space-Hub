@@ -3,6 +3,7 @@ import styles from './App.module.css'
 import Feed from './pages/feed/Feed'
 import Header from './components/header/Header';
 import FullPost from './pages/full-post/FullPost';
+import NewPost from './pages/new-post/NewPost';
 
 function App() {
     
@@ -26,6 +27,10 @@ function App() {
         {
             path: "/:postId/comments",
             element: <FullPost />
+        },
+        {
+            path: "/createPost",
+            element: <NewPost />
         }
     ]);
 
