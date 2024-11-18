@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import styles from "./FullPost.module.css";
 import { useEffect, useState } from "react";
 import GravityCounter from "../../components/gravity-counter/GravityCounter";
+import timeService from "../../services/time-service";
 
 export default function FullPost() {
     const { postId } = useParams();
@@ -11,7 +12,7 @@ export default function FullPost() {
     const [isLoading, setIsLoading] = useState(true);
 
     const updateGravity = async (change) => {
-        
+
         if (change === 1)
         {
             //Push to the db
@@ -31,7 +32,8 @@ export default function FullPost() {
                 title: "Why do we have tides?",
                 id: "first-of-its-kind",
                 content: "How does it even make sense?",
-                gravity: 5
+                gravity: 5,
+                postedAt: 1731894131
             };
             setIsLoading(false);
             setPost(res.id === postId && res);
@@ -46,14 +48,15 @@ export default function FullPost() {
 
     return (
         <div className={styles.postWrapper}>
+            <div className={styles.userProfile}>
+                <img className={styles.profilePicture}></img>
+                <h3 className="less-important">{post?.author || "Anonymous"}</h3>
+            </div>
             {post && <div className={styles.post}>
                 <div className={styles.title}>
                     {/* Show title and author */}
                     <h1>{post.title}</h1>
-                    <span className={styles.user}>
-                        <img className={styles.profilePicture}></img>
-                        <h3 className="less-important">{post.author || "Anonymous"}</h3>
-                    </span>
+                    <h3 className="less-important">Posted {timeService.convertRelative(post?.postedAt)}</h3>
                 </div>
                 <div className={styles.content}>
                     {/* Show content */}

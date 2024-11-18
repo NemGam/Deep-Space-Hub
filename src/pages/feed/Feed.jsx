@@ -16,7 +16,8 @@ export default function Feed() {
                     title: "Why do we have tides?",
                     id: "first-of-its-kind",
                     content: "How does it even make sense?",
-                    gravity: 5
+                    gravity: 5,
+                    postedAt: 1731893231
                 },
                 {
                     title: "Hello World 2!",
