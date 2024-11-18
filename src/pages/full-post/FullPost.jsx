@@ -1,10 +1,12 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styles from "./FullPost.module.css";
 import { useEffect, useState } from "react";
 import GravityCounter from "../../components/gravity-counter/GravityCounter";
 import timeService from "../../services/time-service";
 import CommentsFeed from "../../components/comments-feed/CommentsFeed";
 import databaseService from "../../services/database-service";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export default function FullPost() {
     const { postId } = useParams();
@@ -67,7 +69,7 @@ export default function FullPost() {
         //Clear
         setNewComment("");
 
-        
+
     }
 
     const handleCancelComment = (e) => {
@@ -98,7 +100,13 @@ export default function FullPost() {
                                 {/* Show content */}
                                 <p>{post.content}</p>
                                 <img src={post.img_url} className={styles.image} />
-                                <GravityCounter gravity={gravity} isLoading={isGravityChangeLoading} onUpvote={() => updateGravity(1)} />
+                                <div>
+                                    <GravityCounter gravity={gravity} isLoading={isGravityChangeLoading} onUpvote={() => updateGravity(1)} />
+                                    <div className={styles.manipulateButtons}>
+                                        <Link to="../edit" relative="path"><button><FontAwesomeIcon icon={faEdit} /></button></Link>
+                                        <button><FontAwesomeIcon icon={faTrash} /></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -113,11 +121,10 @@ export default function FullPost() {
                                 {showSubmitCommentBtn && <button className={styles.submitBtn} onMouseDown={handleSubmitComment}>Submit</button>}
                                 {showSubmitCommentBtn && <button className={styles.cancelBtn} onMouseDown={handleCancelComment}>Cancel</button>}
                             </div>
-                            <CommentsFeed postId={postId}/>
+                            <CommentsFeed postId={postId} />
                         </div>
                     </div>
                 }
-
 
             </div>
 
