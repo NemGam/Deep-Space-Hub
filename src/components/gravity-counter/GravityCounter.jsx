@@ -1,7 +1,7 @@
 import styles from "./GravityCounter.module.css"
 
 // A.k.a. karma
-export default function GravityCounter({gravity, showUpvote = true, onUpvote, showDownvote = true, onDownvote}){
+export default function GravityCounter({gravity, showUpvote = true, onUpvote, showDownvote = false, onDownvote, isLoading}){
 
     const handleGravityChange = (e, change) =>{
         e.preventDefault();
@@ -13,9 +13,9 @@ export default function GravityCounter({gravity, showUpvote = true, onUpvote, sh
 
     return(
         <div className={styles.counter}>
-            {showUpvote && <button onClick={(e) => handleGravityChange(e, 1)}>&uarr;</button>}
+            {!isLoading && showUpvote && <button onClick={(e) => handleGravityChange(e, 1)}>&uarr;</button>}
             <span>{`${gravity || 0} gravity`}</span>
-            {showDownvote && <button onClick={(e) => handleGravityChange(e, -1)}>&darr;</button>}
+            {!isLoading && showDownvote && <button onClick={(e) => handleGravityChange(e, -1)}>&darr;</button>}
         </div>
     );
 }
