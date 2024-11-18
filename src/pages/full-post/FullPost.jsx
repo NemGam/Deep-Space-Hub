@@ -4,43 +4,50 @@ import { useEffect, useState } from "react";
 import GravityCounter from "../../components/gravity-counter/GravityCounter";
 import timeService from "../../services/time-service";
 import CommentsFeed from "../../components/comments-feed/CommentsFeed";
+import databaseService from "../../services/database-service";
 
 export default function FullPost() {
     const { postId } = useParams();
-    const [id, setId] = useState(postId);
     const [post, setPost] = useState();
     const [gravity, setGravity] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [isGravityChangeLoading, setIsGravityChangeLoading] = useState(true);
     const [newComment, setNewComment] = useState("");
     const [showSubmitCommentBtn, setShowSubmitCommentBtn] = useState(false);
 
     const updateGravity = async (change) => {
 
+        setIsGravityChangeLoading(true);
         if (change === 1)
         {
             //Push to the db
+            console.log(gravity);
+            await databaseService.updateGravity(postId, gravity + 1);
             setGravity(gravity + 1);
-            post.gravity = gravity + 1;
         }
-        else if (change === -1)
+        else
         {
             setGravity(gravity - 1);
         }
+
+        setIsGravityChangeLoading(false);
     }
 
     useEffect(() => {
         const getPost = async () => {
             //fetch it
-            const res = {
-                title: "Why do we have tides?",
-                id: "first-of-its-kind",
-                content: "How does it even make sense?",
-                gravity: 5,
-                postedAt: 1731894131
-            };
+            const res = await databaseService.getFullPost(postId);
+            // const res = {
+            //     title: "Why do we have tides?",
+            //     id: "first-of-its-kind",
+            //     content: "How does it even make sense?",
+            //     gravity: 5,
+            //     postedAt: "2024-11-18T07:35:42.529342+00:00"
+            // };
             setIsLoading(false);
-            setPost(res.id === postId && res);
-            setGravity(res.gravity);
+            setPost(res[0]);
+            setGravity(res[0].gravity);
+            setIsGravityChangeLoading(false);
         }
 
         getPost();
@@ -67,7 +74,6 @@ export default function FullPost() {
         setNewComment("");
     }
 
-
     //Load comments
 
     return (
@@ -84,12 +90,13 @@ export default function FullPost() {
                             <div className={styles.title}>
                                 {/* Show title and author */}
                                 <h1>{post.title}</h1>
-                                <h3 className="less-important">Posted {timeService.convertRelative(post?.postedAt)}</h3>
+                                <h3 className="less-important">Posted {timeService.convertRelative(post?.created_at)}</h3>
                             </div>
                             <div className={styles.content}>
                                 {/* Show content */}
                                 <p>{post.content}</p>
-                                <GravityCounter gravity={gravity} onUpvote={() => updateGravity(1)} />
+                                <img src={post.img_url} className={styles.image} />
+                                <GravityCounter gravity={gravity} isLoading={isGravityChangeLoading} onUpvote={() => updateGravity(1)} />
                             </div>
                         </div>
 
