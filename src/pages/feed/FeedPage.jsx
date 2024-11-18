@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Post from "../../components/post/Post";
-import styles from "./Feed.module.css";
+import styles from "./FeedPage.module.css";
 import { useEffect, useState } from "react";
 import databaseService from "../../services/database-service";
 
