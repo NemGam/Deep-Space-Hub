@@ -1,16 +1,27 @@
 import { useState } from "react";
 import styles from "./NewPost.module.css"
+import databaseService from "../../services/database-service";
+import { useNavigate } from "react-router-dom";
 
 export default function NewPost() {
+    const navigate = useNavigate()
+
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [imageUrl, setImageUrl] = useState("");
+
+    const createPost = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        await databaseService.createPost(title, content, imageUrl);
+        navigate("/");
+    }
 
     return (
         <div className={styles.postWrapper}>
             <div className={styles.post}>
                 <h1>Create a new Post</h1>
-                <form className={styles.form}>
+                <form className={styles.form} onSubmit={createPost}>
                     <div>
                         <div className={styles.titleInput}>
                             <label htmlFor="title">Title</label><br />
