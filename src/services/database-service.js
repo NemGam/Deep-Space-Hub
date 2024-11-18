@@ -38,7 +38,18 @@ const createPost = async (title, content, img_url) => {
     if (error) console.error(error);
 }
 
+const getComments = async (postId) => {
+    const {data, error} = await supabase.from('Comments').select().eq('parent_post', postId);
+    if (error) console.error(error);
+    return data;
+}
+
+const createComment = async(postId, content) => {
+    const { error } = await supabase.from('Comments').insert({parent_post: postId, author: 1, content: content });
+    if (error) console.error(error);
+}
+
 
 export default{
-    getPosts, createPost, getFullPost, updateGravity
+    getPosts, createPost, getFullPost, updateGravity, getComments, createComment
 }

@@ -63,9 +63,11 @@ export default function FullPost() {
 
         if (newComment.length == 0) return;
         //Post to DB
-        
+        await databaseService.createComment(postId, newComment);
         //Clear
         setNewComment("");
+
+        
     }
 
     const handleCancelComment = (e) => {
@@ -111,7 +113,7 @@ export default function FullPost() {
                                 {showSubmitCommentBtn && <button className={styles.submitBtn} onMouseDown={handleSubmitComment}>Submit</button>}
                                 {showSubmitCommentBtn && <button className={styles.cancelBtn} onMouseDown={handleCancelComment}>Cancel</button>}
                             </div>
-                            <CommentsFeed />
+                            <CommentsFeed postId={postId}/>
                         </div>
                     </div>
                 }
