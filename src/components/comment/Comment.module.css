@@ -1,0 +1,28 @@
+.comment{
+    /* height: 50px; */
+    background-color: var(--primary-color);
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    text-align: start;
+    vertical-align: top;
+    border-radius: 10px;
+}
+
+.comment img{
+    width: 40px;
+    height: 40px;
+    background-color: grey;
+    border-radius: 30px;
+    border: white 1px solid;
+}
+
+span.postTime{
+    font-size: smaller;
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

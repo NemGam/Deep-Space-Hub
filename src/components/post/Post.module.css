@@ -10,6 +10,7 @@
     color: white;
     display: flex;
     flex-direction: column;
+    transition: background-color 0.1s;
 }
 
 .gravityCounter{
@@ -19,7 +20,7 @@
 
 .post:hover{
     color: unset;
-    background-color: red;
+    background-color: var(--primary-color-darker);
 }
 
 .post h2, .post h5{

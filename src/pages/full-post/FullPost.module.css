@@ -2,10 +2,20 @@
     width: 60%;
     height: 100%;
     display: flex;
-    padding: 30px 80px;
+    padding: 30px 60px;
     flex-direction: column;
     background-color: #2E1B49;
-    width: 60%;
+    align-content: center;
+    min-height: 300px;
+}
+
+.mainPart{
+    border-bottom: white 1px solid;
+    padding-bottom: 30px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #2E1B49;
     align-content: center;
     min-height: 300px;
 }
@@ -14,6 +24,41 @@
     border-radius: 0 10px 10px 0;
 }
 
+.comments{
+    margin-top: 30px;
+}
+
+.comments > div{
+    margin-bottom: 30px;
+}
+
+.comments > div > textarea{
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    resize: vertical;
+    max-height: 100px;
+    min-height: 60px;
+}
+
+.submitBtn, .cancelBtn{
+    width: 80px;
+    margin-top: 10px;
+    height: 30px;
+    border-radius: 10px;
+    padding: 4px;
+    vertical-align: middle;
+}
+
+.submitBtn{
+    background-color: var(--accent-color);
+}
+
+.cancelBtn{
+    background-color: var(--primary-color);
+    margin-left: 10px;
+}
 
 .userProfile{
     width: 80px;
@@ -21,6 +66,7 @@
     display: flex;
     align-items: center;
     border-radius: 10px 0 0 10px;
+    max-height: 100px;
 }
 
 .profilePicture{

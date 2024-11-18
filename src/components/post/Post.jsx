@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./Post.module.css";
 import GravityCounter from "../gravity-counter/GravityCounter";
-import { useEffect } from "react";
 import timeService from "../../services/time-service";
 
 

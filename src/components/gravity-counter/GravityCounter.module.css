@@ -1,5 +1,5 @@
 .counter{
-    background-color: var(--ascent-color);
+    background-color: var(--primary-color);
     padding: 5px;
     border-radius: 10px;
     text-align: center;
@@ -13,6 +13,7 @@
 
 
 .counter button{
+    background-color: var(--accent-color);
     width: 30px;
     height: 30px;
     vertical-align: middle;
