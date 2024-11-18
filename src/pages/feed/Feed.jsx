@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Post from "../../components/post/Post";
 import styles from "./Feed.module.css";
 import { useEffect, useState } from "react";
+import databaseService from "../../services/database-service";
 
 export default function Feed() {
     const [posts, setPosts] = useState([]);
@@ -17,7 +18,7 @@ export default function Feed() {
                 temp.sort((a, b) => b.gravity - a.gravity);
                 break;
             case "time":
-                temp.sort((a, b) => b.postedAt - a.postedAt);
+                temp.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
                 break;
             case "name":
                 temp.sort((a, b) => a.title.localeCompare(b.title));
@@ -39,40 +40,42 @@ export default function Feed() {
 
         const getPosts = async () => {
             //Fetch posts
-            const res = [
-                {
-                    title: "Why do we have tides?",
-                    id: "first-of-its-kind",
-                    content: "How does it even make sense?",
-                    gravity: 5,
-                    postedAt: 1731893231
-                },
-                {
-                    title: "Hello World 2!",
-                    id: "second-of-its-kind",
-                    content: "egijwrgiowrjg iowjg oijwrgoijweiog jweig weoig jjwe gjweig owejg iowej gioweg jweiog jweoigj weiogj weg wrgyuiolkijuhgf engjoergn erogneroirngoie goinrogneroignero gnegoirnoiroiren goern eoirng oreing oernig eriog neroig neriog neroi ngreoin  oiengoier  niorege rgojn eroinre wnoer wein weoin noi ewiong ",
-                    gravity: 0,
-                    postedAt: 1731899211
-                },
-                {
-                    title: "Hello World 2!",
-                    id: "secondt34yu6uy-of-its-kind",
-                    gravity: 15,
-                    postedAt: 1731892231
-                },
-                {
-                    title: "Hello World 2!",
-                    id: "seco42tet34tnd-of-its-kind",
-                    gravity: 0,
-                    postedAt: 1731893731
-                },
-                {
-                    title: "Hello World 2!",
-                    id: "second-of-itjhgfds-kind",
-                    gravity: 0,
-                    postedAt: 1731893291
-                },
-            ];
+            const res = await databaseService.getPosts();
+            console.log(res);
+            // const res = [
+            //     {
+            //         title: "Why do we have tides?",
+            //         id: "first-of-its-kind",
+            //         content: "How does it even make sense?",
+            //         gravity: 5,
+            //         postedAt: 1731893231
+            //     },
+            //     {
+            //         title: "Hello World 2!",
+            //         id: "second-of-its-kind",
+            //         content: "egijwrgiowrjg iowjg oijwrgoijweiog jweig weoig jjwe gjweig owejg iowej gioweg jweiog jweoigj weiogj weg wrgyuiolkijuhgf engjoergn erogneroirngoie goinrogneroignero gnegoirnoiroiren goern eoirng oreing oernig eriog neroig neriog neroi ngreoin  oiengoier  niorege rgojn eroinre wnoer wein weoin noi ewiong ",
+            //         gravity: 0,
+            //         postedAt: 1731899211
+            //     },
+            //     {
+            //         title: "Hello World 2!",
+            //         id: "secondt34yu6uy-of-its-kind",
+            //         gravity: 15,
+            //         postedAt: 1731892231
+            //     },
+            //     {
+            //         title: "Hello World 2!",
+            //         id: "seco42tet34tnd-of-its-kind",
+            //         gravity: 0,
+            //         postedAt: 1731893731
+            //     },
+            //     {
+            //         title: "Hello World 2!",
+            //         id: "second-of-itjhgfds-kind",
+            //         gravity: 0,
+            //         postedAt: 1731893291
+            //     },
+            // ];
             
             
 
@@ -106,11 +109,12 @@ export default function Feed() {
             <div className={styles.feed}>
                 {posts?.map((el, ind) => {
                     if (!el.title.toLowerCase().startsWith(search.toLowerCase())) return;
+
                     return <Post key={el.id}
                         title={el.title}
                         id={el.id}
                         gravity={el.gravity}
-                        postedAt={el.postedAt} />;
+                        created_at={el.created_at} />;
                 })}
             </div>
             <div className={styles.featuresVote}>
