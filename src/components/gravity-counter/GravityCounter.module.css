@@ -19,3 +19,9 @@
     vertical-align: middle;
     text-align: center;
 }
+
+.disabled{
+    user-select: none;
+    pointer-events: none;
+    filter: brightness(80%);
+}

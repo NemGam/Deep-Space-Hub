@@ -13,9 +13,11 @@ export default function GravityCounter({gravity, showUpvote = true, onUpvote, sh
 
     return(
         <div className={styles.counter}>
-            {!isLoading && showUpvote && <button onClick={(e) => handleGravityChange(e, 1)}>&uarr;</button>}
+            {showUpvote && 
+                <button onClick={(e) => handleGravityChange(e, 1)} className={isLoading? styles.disabled : ""}>&uarr;</button>}
             <span>{`${gravity || 0} gravity`}</span>
-            {!isLoading && showDownvote && <button onClick={(e) => handleGravityChange(e, -1)}>&darr;</button>}
+            {showDownvote && 
+                <button onClick={(e) => handleGravityChange(e, -1)} className={isLoading? styles.disabled : ""}>&darr;</button>}
         </div>
     );
 }
