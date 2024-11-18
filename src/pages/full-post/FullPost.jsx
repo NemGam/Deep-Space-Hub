@@ -7,10 +7,11 @@ import CommentsFeed from "../../components/comments-feed/CommentsFeed";
 import databaseService from "../../services/database-service";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { usePost } from "../../hooks/usePost";
 
 export default function FullPost() {
     const { postId } = useParams();
-    const [post, setPost] = useState();
+    const {post, setPost} = usePost();
     const [gravity, setGravity] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [isGravityChangeLoading, setIsGravityChangeLoading] = useState(true);
@@ -104,7 +105,6 @@ export default function FullPost() {
                                     <GravityCounter gravity={gravity} isLoading={isGravityChangeLoading} onUpvote={() => updateGravity(1)} />
                                     <div className={styles.manipulateButtons}>
                                         <Link to="../edit" relative="path"><button><FontAwesomeIcon icon={faEdit} /></button></Link>
-                                        <button><FontAwesomeIcon icon={faTrash} /></button>
                                     </div>
                                 </div>
                             </div>

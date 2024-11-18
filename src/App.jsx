@@ -1,32 +1,25 @@
-import { Route, useParams, useRoutes } from 'react-router-dom';
+import { useRoutes } from 'react-router-dom';
 import styles from './App.module.css'
-import Feed from './pages/feed/Feed'
-import Header from './components/header/Header';
+import FeedPage from './pages/feed/FeedPage'
 import FullPost from './pages/full-post/FullPost';
 import NewPost from './pages/new-post/NewPost';
+import EditPostPage from './pages/edit-post/EditPostPage';
+import { PostProvider } from './contexts/PostContextProvider';
 
 function App() {
-    
-
-    const postLoader = async ({params}) => {
-        const post = posts.find((item) => item.id === params.postId);
-
-        if (!post){
-            return null;
-        }
-        else{
-            return post;
-        }
-    }
 
     const routes = useRoutes([
         {
             path: "/",
-            element: <Feed />,
+            element: <FeedPage />,
         },
         {
             path: "/:postId/comments",
             element: <FullPost />
+        },
+        {
+            path: "/:postId/edit",
+            element: <EditPostPage />
         },
         {
             path: "/createPost",
@@ -36,10 +29,11 @@ function App() {
 
     return (
         <>
-            <div className={styles.app}>
-                {routes}
-            </div>
-
+            <PostProvider>
+                <div className={styles.app}>
+                    {routes}
+                </div>
+            </PostProvider>
         </>
     )
 }

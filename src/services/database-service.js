@@ -8,16 +8,17 @@ if (!KEY) console.error("KEY IS REQUIRED!");
 if (!DB_URL) console.error("DB_URL IS REQUIRED!");
 
 
-let supabase;
 
-if (!supabase){
-    supabase = createClient(DB_URL, KEY);
-    console.log("Connection created");
+if (!globalThis._supabaseClient) {
+    console.log("Creating a new Supabase client...");
+    globalThis._supabaseClient = createClient(DB_URL, KEY);
 }
+
+const supabase = globalThis._supabaseClient;
 
 const getPosts = async () => {
     const {data, error} = await supabase.from('Posts').select('id, created_at, title, gravity');
-    if (error) console.error(error);
+    if (error) console.error(error); 
     return data;
 }
 
@@ -38,6 +39,16 @@ const createPost = async (title, content, img_url) => {
     if (error) console.error(error);
 }
 
+const updatePost = async (id, title, content, img_url) => {
+    const {error} = await supabase.from('Posts').update({title: title, content: content, img_url: img_url}).eq('id', id);
+    if (error) console.error(error);
+}
+
+const deletePost = async (id) => {
+    const response = await supabase.from('Posts').delete().eq('id', id);
+    return response;
+}
+
 const getComments = async (postId) => {
     const {data, error} = await supabase.from('Comments').select().eq('parent_post', postId);
     if (error) console.error(error);
@@ -51,5 +62,5 @@ const createComment = async(postId, content) => {
 
 
 export default{
-    getPosts, createPost, getFullPost, updateGravity, getComments, createComment
+    getPosts, createPost, getFullPost, updatePost, deletePost, updateGravity, getComments, createComment
 }
