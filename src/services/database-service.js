@@ -66,9 +66,13 @@ const updateGravity = async (id, gravity) => {
     if (error) console.error(error);
 }
 
-const createPost = async (title, content, img_url) => {
-    const { error } = await supabase.from('Posts').insert({ title: title, content: content, img_url: img_url });
-    if (error) console.error(error);
+const createPost = async (title, content, img_url, author) => {
+    const { error } = await supabase.from('Posts').insert({ title: title, content: content, img_url: img_url, author: author });
+    if (error) {
+        console.error(error);
+        return false;
+    }
+    return true;
 }
 
 const updatePost = async (id, title, content, img_url) => {
@@ -88,12 +92,19 @@ const getComments = async (postId) => {
     return data;
 }
 
-const createComment = async (postId, content) => {
-    const { error } = await supabase.from('Comments').insert({ parent_post: postId, author: 1, content: content });
+const createComment = async (postId, content, author) => {
+    const { error } = await supabase.from('Comments').insert({ parent_post: postId, author: author, content: content });
     if (error) console.error(error);
+}
+
+const fetchProfile = async (userId) => {
+    console.log(userId);
+    const { data, error } = await supabase.from('profiles').select().eq('user_id', userId);
+    if (error) console.error(error);
+    return data;
 }
 
 
 export default {
-    getPosts, createPost, getFullPost, updatePost, deletePost, updateGravity, getComments, createComment, signUp
+    getPosts, createPost, getFullPost, updatePost, deletePost, updateGravity, getComments, createComment, signUp, fetchProfile
 }

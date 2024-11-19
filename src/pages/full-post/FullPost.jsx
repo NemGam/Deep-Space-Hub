@@ -8,6 +8,7 @@ import databaseService from "../../services/database-service";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { usePost } from "../../hooks/usePost";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function FullPost() {
     const { postId } = useParams();
@@ -18,6 +19,7 @@ export default function FullPost() {
     const [isGravityChangeLoading, setIsGravityChangeLoading] = useState(true);
     const [newComment, setNewComment] = useState("");
     const [showSubmitCommentBtn, setShowSubmitCommentBtn] = useState(false);
+    const {user} = useAuth();
 
     const updateGravity = async (change) => {
 
@@ -60,7 +62,7 @@ export default function FullPost() {
 
         if (newComment.length == 0) return;
         //Post to DB
-        await databaseService.createComment(postId, newComment);
+        await databaseService.createComment(postId, newComment, user.id);
         //Clear
         setNewComment("");
 

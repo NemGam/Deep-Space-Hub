@@ -5,8 +5,7 @@ import AuthContext from "../../contexts/AuthContext";
 import { useAuth } from "../../hooks/useAuth";
 
 export default function Header(){
-    const {user, session} = useAuth();
-    console.log(user);
+    const {user} = useAuth();
 
     return(
         <header className={styles.header}>

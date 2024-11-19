@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./NewPost.module.css"
 import databaseService from "../../services/database-service";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function NewPost() {
     const navigate = useNavigate()
@@ -9,12 +10,13 @@ export default function NewPost() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [imageUrl, setImageUrl] = useState("");
+    const {user} = useAuth();
 
     const createPost = async (e) => {
         e.preventDefault();
         e.stopPropagation();
-        await databaseService.createPost(title, content, imageUrl);
-        navigate("/");
+        const res = await databaseService.createPost(title, content, imageUrl, user.id);
+        if (res) navigate("/");
     }
 
     return (
