@@ -16,6 +16,21 @@ if (!globalThis._supabaseClient) {
 
 const supabase = globalThis._supabaseClient;
 
+// const signUp = async (username, email, password) => {
+//     const { data, error } = await supabase.auth.signUp({
+//         email,
+//         password,
+//       })
+    
+//       if (error) {
+//         console.error('Error signing up:', error.message)
+//         // Handle the error (e.g., display a message to the user)
+//       } else {
+//         console.log('Sign-up successful:', data)
+//         // Proceed with post-sign-up logic
+//       }
+// }
+
 const getPosts = async () => {
     const {data, error} = await supabase.from('Posts').select('id, created_at, title, gravity');
     if (error) console.error(error); 
