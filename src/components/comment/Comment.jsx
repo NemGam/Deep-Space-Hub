@@ -8,7 +8,7 @@ export default function Comment({ author, pfp, content, postedAt }) {
             
             <div className={styles.header}>
             <img src={pfp} />
-                <span>{`${author} `}</span>
+                {/* <span>{`${author} `}</span> */}
                 <span className={`less-important ${styles.postTime}`}>{timeService.convertRelative(postedAt)}</span>
             </div>
             <p>{content}</p>

@@ -11,11 +11,13 @@ export default function EditPostPage() {
     const [content, setContent] = useState(post.content);
     const [imageUrl, setImageUrl] = useState(post.img_url);
 
+    console.log(post);
+
     const updatePost = async (e) => {
         e.preventDefault();
         e.stopPropagation();
-        await databaseService.updatePost(post.id, title, content, imageUrl);
-        navigate(`/${post.id}/comments`);
+        await databaseService.updatePost(post.post_id, title, content, imageUrl);
+        navigate(`/${post.post_id}/comments`);
     }
 
     return (

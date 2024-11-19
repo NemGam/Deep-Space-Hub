@@ -12,6 +12,7 @@ import { useAuth } from "../../hooks/useAuth";
 
 export default function FullPost() {
     const { postId } = useParams();
+    const { user, profile } = useAuth();
     const navigate = useNavigate();
     const { post, setPost } = usePost();
     const [gravity, setGravity] = useState(0);
@@ -19,8 +20,7 @@ export default function FullPost() {
     const [isGravityChangeLoading, setIsGravityChangeLoading] = useState(true);
     const [newComment, setNewComment] = useState("");
     const [showSubmitCommentBtn, setShowSubmitCommentBtn] = useState(false);
-    const { user, profile } = useAuth();
-    const [isPostOwner, setIsPostOwner] = useState(profile && post?.author === profile?.username);
+    const [isPostOwner, setIsPostOwner] = useState();
 
     const updateGravity = async (change) => {
 
@@ -42,17 +42,22 @@ export default function FullPost() {
 
     useEffect(() => {
         const getPost = async () => {
-            console.log("Fetching post");
+            console.log("Fetching the post");
             const res = await databaseService.getFullPost(postId);
-            console.log(res);
             setIsLoading(false);
             setPost(res);
             setGravity(res.gravity);
             setIsGravityChangeLoading(false);
+            setIsPostOwner(profile && (post?.username == profile?.username));
         }
 
         getPost();
     }, [postId]);
+
+    //Allow the modification if the user is author
+    useEffect(() => {
+        setIsPostOwner(profile && (post?.username == profile?.username));
+    }, [profile, post])
 
     const enableSubmitCommentButton = (state) => {
         setShowSubmitCommentBtn(state);

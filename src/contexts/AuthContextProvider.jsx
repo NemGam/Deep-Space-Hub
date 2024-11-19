@@ -27,6 +27,7 @@ function AuthProvider({ children }) {
                     console.log("Fetched profile data:", data);
                     setProfile(data);
                     localStorage.setItem("profile", JSON.stringify(data));
+                    console.log(data);
                 }
             }
         }
