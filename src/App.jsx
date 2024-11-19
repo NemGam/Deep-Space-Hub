@@ -5,6 +5,8 @@ import FullPost from './pages/full-post/FullPost';
 import NewPost from './pages/new-post/NewPost';
 import EditPostPage from './pages/edit-post/EditPostPage';
 import { PostProvider } from './contexts/PostContextProvider';
+import AuthPage from './pages/auth-page/AuthPage';
+import AuthProvider from './contexts/AuthContextProvider';
 
 function App() {
 
@@ -24,6 +26,10 @@ function App() {
         {
             path: "/createPost",
             element: <NewPost />
+        },
+        {
+            path: "/auth",
+            element: <AuthPage />
         }
     ]);
 
@@ -33,6 +39,7 @@ function App() {
                 <div className={styles.app}>
                     {routes}
                 </div>
+
             </PostProvider>
         </>
     )

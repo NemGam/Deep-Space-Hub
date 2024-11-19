@@ -14,8 +14,10 @@
 
 .profile{
     margin-left: auto;
-    background-color: red;
+    background-color: grey;
     width: 30px;
+    height: 30px;
+    border: white 1px solid;
     border-radius: 30px;
 }
 

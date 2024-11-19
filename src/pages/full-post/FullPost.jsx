@@ -41,13 +41,6 @@ export default function FullPost() {
         const getPost = async () => {
             //fetch it
             const res = await databaseService.getFullPost(postId);
-            // const res = {
-            //     title: "Why do we have tides?",
-            //     id: "first-of-its-kind",
-            //     content: "How does it even make sense?",
-            //     gravity: 5,
-            //     postedAt: "2024-11-18T07:35:42.529342+00:00"
-            // };
             setIsLoading(false);
             setPost(res[0]);
             setGravity(res[0].gravity);

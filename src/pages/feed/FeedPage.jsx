@@ -107,7 +107,7 @@ export default function Feed() {
 
             </div>
             <div className={styles.feed}>
-                {posts?.map((el, ind) => {
+                {posts.length > 0 && posts?.map((el, ind) => {
                     if (!el.title.toLowerCase().startsWith(search.toLowerCase())) return;
 
                     return <Post key={el.id}
@@ -115,7 +115,7 @@ export default function Feed() {
                         id={el.id}
                         gravity={el.gravity}
                         created_at={el.created_at} />;
-                })}
+                }) || "There are no posts. Be first to post!"}
             </div>
             <div className={styles.featuresVote}>
                 <h4>Vote for new features!</h4>
