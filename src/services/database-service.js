@@ -55,7 +55,7 @@ const getPosts = async () => {
 }
 
 const getFullPost = async (id) => {
-    const { data, error } = await supabase.from('Posts').select('*').eq('id', id);
+    const { data, error } = await supabase.from('Posts').select('*').eq('id', id).single();
 
     if (error) console.error(error);
     return data;
@@ -97,14 +97,27 @@ const createComment = async (postId, content, author) => {
     if (error) console.error(error);
 }
 
-const fetchProfile = async (userId) => {
-    console.log(userId);
-    const { data, error } = await supabase.from('profiles').select().eq('user_id', userId);
-    if (error) console.error(error);
-    return data;
+//Fetches someone's profile
+const fetchAuthUserProfile = async (user_id) => {
+    const { data, error } = await supabase.from('profiles').select().eq('user_id', user_id).single();
+    return {data, error};
+}
+
+//Fetches the profile by id of authenticated user
+const fetchProfile = async (username) => {
+    try{
+        const { data, error } = await supabase.from('public_profiles').select().eq('username', username).single();
+        if (error) throw new Error(error);
+        return {data: data, error: null};
+    }
+    catch (err){
+        if (err.code === "PGRST116"){
+            return {data: null, error: "No users found"};
+        }
+    }
 }
 
 
 export default {
-    getPosts, createPost, getFullPost, updatePost, deletePost, updateGravity, getComments, createComment, signUp, fetchProfile
+    getPosts, createPost, getFullPost, updatePost, deletePost, updateGravity, getComments, createComment, signUp, fetchProfile, fetchAuthUserProfile
 }

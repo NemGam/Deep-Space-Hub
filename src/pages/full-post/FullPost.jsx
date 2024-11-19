@@ -44,8 +44,8 @@ export default function FullPost() {
             //fetch it
             const res = await databaseService.getFullPost(postId);
             setIsLoading(false);
-            setPost(res[0]);
-            setGravity(res[0].gravity);
+            setPost(res);
+            setGravity(res.gravity);
             setIsGravityChangeLoading(false);
         }
 

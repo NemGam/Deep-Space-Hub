@@ -1,13 +1,40 @@
 import { useEffect, useState } from "react";
 import AuthContext from "./AuthContext"; // Import the context
-import { useNavigate } from "react-router-dom";
 import databaseService from "../services/database-service";
 // import { supabase } from "@supabase/auth-ui-shared";
 
 function AuthProvider({ children }) {
     const [session, setSession] = useState(null);
     const [user, setUser] = useState(null);
-    const [profile, setProfile] = useState(null);
+    const [profile, setProfile] = useState(() => {
+        const cachedProfile = localStorage.getItem("profile");
+        return cachedProfile ? JSON.parse(cachedProfile) : null;
+    });
+
+    useEffect(() => {
+
+        const getProfile = async () => {
+            if (session?.user && (!profile || session.user.id !== profile.user_id))
+            {
+
+                const { data, error } = await databaseService.fetchAuthUserProfile(session.user.id);
+                if (data.error)
+                {
+                    console.error("Error fetching profile:", error.message);
+                }
+                else
+                {
+                    console.log("Fetched profile data:", data);
+                    setProfile(data);
+                    localStorage.setItem("profile", JSON.stringify(data));
+                }
+            }
+        }
+        // if ()
+        getProfile();
+
+
+    }, [session, user]);
 
     useEffect(() => {
         const { data: authListener } = globalThis._supabaseClient.auth.onAuthStateChange(
@@ -15,28 +42,6 @@ function AuthProvider({ children }) {
                 console.log('Auth state change:', event);
                 setSession(session);
                 setUser(session?.user ?? null);
-
-
-                // if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')
-                // {
-                //     console.log("Trying to fetch");
-                //     if (session?.user)
-                //     {
-                //         console.log(session);
-                //         console.log(session.user);
-
-                //         const data = await databaseService.fetchProfile('aee633f0-498f-4f50-8ce7-68368bb168e0');
-                //         console.log(data);
-                //         if (data.error)
-                //         {
-                //             console.error("Error fetching profile:", error.message);
-                //         } else
-                //         {
-                //             console.log("Fetched profile data:", data);
-                //             setProfile(data); // Assuming setProfile manages profile state
-                //         }
-                //     }
-                // }
             }
         );
 

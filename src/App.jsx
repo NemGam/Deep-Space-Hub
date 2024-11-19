@@ -7,6 +7,7 @@ import EditPostPage from './pages/edit-post/EditPostPage';
 import { PostProvider } from './contexts/PostContextProvider';
 import AuthPage from './pages/auth-page/AuthPage';
 import AuthProvider from './contexts/AuthContextProvider';
+import ProfilePage from './pages/profile-page/ProfilePage';
 
 function App() {
 
@@ -30,6 +31,10 @@ function App() {
         {
             path: "/auth",
             element: <AuthPage />
+        },
+        {
+            path: "/users/:username",
+            element: <ProfilePage />
         }
     ]);
 
