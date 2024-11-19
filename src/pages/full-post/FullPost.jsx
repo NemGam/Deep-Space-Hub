@@ -13,13 +13,14 @@ import { useAuth } from "../../hooks/useAuth";
 export default function FullPost() {
     const { postId } = useParams();
     const navigate = useNavigate();
-    const {post, setPost} = usePost();
+    const { post, setPost } = usePost();
     const [gravity, setGravity] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [isGravityChangeLoading, setIsGravityChangeLoading] = useState(true);
     const [newComment, setNewComment] = useState("");
     const [showSubmitCommentBtn, setShowSubmitCommentBtn] = useState(false);
-    const {user} = useAuth();
+    const { user, profile } = useAuth();
+    const [isPostOwner, setIsPostOwner] = useState(profile && post?.author === profile?.username);
 
     const updateGravity = async (change) => {
 
@@ -27,12 +28,12 @@ export default function FullPost() {
         if (change === 1)
         {
             //Push to the db
-            console.log(gravity);
             await databaseService.updateGravity(postId, gravity + 1);
             setGravity(gravity + 1);
         }
         else
         {
+            //Not used for now
             setGravity(gravity - 1);
         }
 
@@ -41,8 +42,9 @@ export default function FullPost() {
 
     useEffect(() => {
         const getPost = async () => {
-            //fetch it
+            console.log("Fetching post");
             const res = await databaseService.getFullPost(postId);
+            console.log(res);
             setIsLoading(false);
             setPost(res);
             setGravity(res.gravity);
@@ -61,12 +63,10 @@ export default function FullPost() {
         e.stopPropagation();
 
         if (newComment.length == 0) return;
-        //Post to DB
+
         await databaseService.createComment(postId, newComment, user.id);
         //Clear
         setNewComment("");
-
-
     }
 
     const handleCancelComment = (e) => {
@@ -86,12 +86,12 @@ export default function FullPost() {
         <>
             <div className={styles.postWrapper}>
 
-                <div className={styles.userProfile}>
-                    <img className={styles.profilePicture}></img>
-                    <h3 className="less-important">{post?.author || "Anonymous"}</h3>
+                {post && <><div className={styles.userProfile}>
+                    <img className={styles.profilePicture} src={`${post.profile_picture}` || null} />
+                    <h3 className="less-important">{post?.username || "Anonymous"}</h3>
                 </div>
-                {
-                    post && <div className={styles.post}>
+
+                    <div className={styles.post}>
                         <div className={styles.mainPart}>
                             <div className={styles.title}>
                                 {/* Show title and author */}
@@ -104,16 +104,16 @@ export default function FullPost() {
                                 <img src={post.img_url} className={styles.image} />
                                 <div>
                                     <GravityCounter gravity={gravity} isLoading={isGravityChangeLoading} onUpvote={() => updateGravity(1)} />
-                                    <div className={styles.manipulateButtons}>
+                                    {isPostOwner && <div className={styles.manipulateButtons}>
                                         <Link to="../edit" relative="path"><button><FontAwesomeIcon icon={faEdit} /></button></Link>
-                                        <button onClick={handleDeletePost}><FontAwesomeIcon icon={faTrash}/></button>
-                                    </div>
+                                        <button onClick={handleDeletePost}><FontAwesomeIcon icon={faTrash} /></button>
+                                    </div>}
                                 </div>
                             </div>
                         </div>
 
                         <div className={styles.comments}>
-                            <div>
+                            {user && <div>
                                 <textarea type="text"
                                     placeholder="Add a comment..."
                                     value={newComment}
@@ -122,10 +122,11 @@ export default function FullPost() {
                                     onBlur={() => enableSubmitCommentButton(false)} />
                                 {showSubmitCommentBtn && <button className={styles.submitBtn} onMouseDown={handleSubmitComment}>Submit</button>}
                                 {showSubmitCommentBtn && <button className={styles.cancelBtn} onMouseDown={handleCancelComment}>Cancel</button>}
-                            </div>
+                            </div>}
                             <CommentsFeed postId={postId} />
                         </div>
                     </div>
+                </>
                 }
 
             </div>

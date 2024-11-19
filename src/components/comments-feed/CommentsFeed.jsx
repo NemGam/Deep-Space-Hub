@@ -9,46 +9,6 @@ export default function CommentsFeed({ postId }) {
 
     useEffect(() => {
         const fetchComments = async () => {
-            //Fetch
-
-            // const res = [
-            //     {
-            //         user: "Anonymous",
-            //         postedAt: Date.now(),
-            //         content: "Hello, this is my first very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long comment!",
-            //         postId: postId,
-            //         id: 124092354683
-            //     },
-            //     {
-            //         user: "Anonymous",
-            //         postedAt: Date.now() + 1,
-            //         content: "Hello, this is my second comment!",
-            //         postId: postId,
-            //         id: 1212332682
-            //     },
-            //     {
-            //         user: "Anonymous",
-            //         postedAt: Date.now() + 1,
-            //         content: "Hello, this is my second comment!",
-            //         postId: postId,
-            //         id: 124065332682
-            //     },
-            //     {
-            //         user: "Anonymous",
-            //         postedAt: Date.now() + 1,
-            //         content: "Hello, this is my second comment!",
-            //         postId: postId,
-            //         id: 12409212432682
-            //     },
-            //     {
-            //         user: "Anonymous",
-            //         postedAt: Date.now() + 1,
-            //         content: "Hello, this is my second comment!",
-            //         postId: postId,
-            //         id: 1240982
-            //     },
-            // ]
-
             const res = await databaseService.getComments(postId);
 
             setComments(res);

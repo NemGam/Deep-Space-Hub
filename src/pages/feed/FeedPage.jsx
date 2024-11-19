@@ -74,11 +74,12 @@ export default function Feed() {
                 {posts.length > 0 && posts?.map((el, ind) => {
                     if (!el.title.toLowerCase().startsWith(search.toLowerCase())) return;
 
-                    return <Post key={el.id}
+                    return <Post key={el.post_id}
                         title={el.title}
-                        id={el.id}
+                        id={el.post_id}
                         gravity={el.gravity}
-                        created_at={el.created_at} />;
+                        created_at={el.created_at} 
+                        author={el.username}/>;
                 }) || "There are no posts. Be first to post!"}
             </div>
             <div className={styles.featuresVote}>

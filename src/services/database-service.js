@@ -49,25 +49,25 @@ const signUp = async (username, email, password) => {
 }
 
 const getPosts = async () => {
-    const { data, error } = await supabase.from('Posts').select('id, created_at, title, gravity');
+    const { data, error } = await supabase.from('posts_view').select('post_id, created_at, title, gravity, username');
     if (error) console.error(error);
     return data;
 }
 
 const getFullPost = async (id) => {
-    const { data, error } = await supabase.from('Posts').select('*').eq('id', id).single();
+    const { data, error } = await supabase.from('posts_view').select().eq('post_id', id).single();
 
     if (error) console.error(error);
     return data;
 }
 
 const updateGravity = async (id, gravity) => {
-    const { error } = await supabase.from('Posts').update({ gravity: gravity }).eq('id', id);
+    const { error } = await supabase.from('posts').update({ gravity: gravity }).eq('id', id);
     if (error) console.error(error);
 }
 
 const createPost = async (title, content, img_url, author) => {
-    const { error } = await supabase.from('Posts').insert({ title: title, content: content, img_url: img_url, author: author });
+    const { error } = await supabase.from('posts').insert({ title: title, content: content, img_url: img_url, author: author });
     if (error) {
         console.error(error);
         return false;
@@ -76,12 +76,12 @@ const createPost = async (title, content, img_url, author) => {
 }
 
 const updatePost = async (id, title, content, img_url) => {
-    const { error } = await supabase.from('Posts').update({ title: title, content: content, img_url: img_url }).eq('id', id);
+    const { error } = await supabase.from('posts').update({ title: title, content: content, img_url: img_url }).eq('id', id);
     if (error) console.error(error);
 }
 
 const deletePost = async (id) => {
-    const response = await supabase.from('Posts').delete().eq('id', id);
+    const response = await supabase.from('posts').delete().eq('id', id);
     console.log(response);
     return response;
 }
