@@ -11,8 +11,6 @@ export default function EditPostPage() {
     const [content, setContent] = useState(post.content);
     const [imageUrl, setImageUrl] = useState(post.img_url);
 
-    console.log(post);
-
     const updatePost = async (e) => {
         e.preventDefault();
         e.stopPropagation();

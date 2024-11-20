@@ -27,7 +27,7 @@ const signUp = async (username, email, password) => {
     {
         console.error('Error signing up:', error.message)
         return null;
-    } 
+    }
     else
     {
         console.log('Sign-up successful:', data);
@@ -45,6 +45,24 @@ const signUp = async (username, email, password) => {
             console.log("USER SUCCESSFULLY SIGNED UP! Welcome aboard " + username + " !");
             return data;
         }
+    }
+}
+
+const logIn = async (email, password) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+    });
+
+    if (error)
+    {
+        console.error('Error signing in:', error.message)
+        return null;
+    }
+    else
+    {
+        console.log('Sign-in successful:', data);
+        return data;
     }
 }
 
@@ -68,7 +86,8 @@ const updateGravity = async (id, gravity) => {
 
 const createPost = async (title, content, img_url, author) => {
     const { error } = await supabase.from('posts').insert({ title: title, content: content, img_url: img_url, author: author });
-    if (error) {
+    if (error)
+    {
         console.error(error);
         return false;
     }
@@ -98,26 +117,46 @@ const createComment = async (postId, content, author) => {
 }
 
 //Fetches someone's profile
-const fetchAuthUserProfile = async (user_id) => {
-    const { data, error } = await supabase.from('profiles').select().eq('user_id', user_id).single();
-    return {data, error};
+const fetchAuthUserProfile = async (userId) => {
+    const { data, error } = await supabase.from('profiles').select().eq('user_id', userId).single();
+    return { data, error };
 }
 
 //Fetches the profile by id of authenticated user
 const fetchProfile = async (username) => {
-    try{
+    try
+    {
         const { data, error } = await supabase.from('public_profiles').select().eq('username', username).single();
         if (error) throw new Error(error);
-        return {data: data, error: null};
+        return { data: data, error: null };
     }
-    catch (err){
-        if (err.code === "PGRST116"){
-            return {data: null, error: "No users found"};
+    catch (err)
+    {
+        if (err.code === "PGRST116")
+        {
+            return { data: null, error: "No users found" };
         }
     }
 }
 
+const logOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) console.error(error);
+}
+
 
 export default {
-    getPosts, createPost, getFullPost, updatePost, deletePost, updateGravity, getComments, createComment, signUp, fetchProfile, fetchAuthUserProfile
+    getPosts, 
+    createPost, 
+    getFullPost, 
+    updatePost, 
+    deletePost, 
+    updateGravity, 
+    getComments, 
+    createComment, 
+    signUp, 
+    logIn,
+    fetchProfile, 
+    fetchAuthUserProfile, 
+    logOut
 }

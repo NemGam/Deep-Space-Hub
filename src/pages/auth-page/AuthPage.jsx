@@ -8,20 +8,30 @@ export default function AuthPage() {
     const [userName, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [mode, setMode] = useState("register");
 
-    const {user} = useAuth();
+    const { user } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (user) navigate("/");
     })
 
-    const signUp = async (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
         e.stopPropagation();
-        const data = await databaseService.signUp(userName, email, password);
-        if (data) navigate("/");
-        console.log(data);
+        if (mode === "register")
+        {
+            const data = await databaseService.signUp(userName, email, password);
+            if (data) navigate("/");
+            console.log(data);
+        }
+        else
+        {
+            const data = await databaseService.logIn(email, password);
+        }
+
+
     }
 
 
@@ -29,17 +39,20 @@ export default function AuthPage() {
         <div className={styles.authPage}>
             <div className={styles.postWrapper}>
                 <div className={styles.post}>
-                    <h1>Register</h1>
-                    <form className={styles.form} onSubmit={signUp}>
+                    <h1>{mode === "register" ? "Register" : "Log In"}</h1>
+                    <form className={styles.form} onSubmit={handleFormSubmit}>
                         <div>
-                            <div className={styles.usernameInput}>
-                                <label htmlFor="username">Username</label>
-                                <input id="username"
-                                    type="text"
-                                    value={userName}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    required />
-                            </div>
+                            {
+                                mode === "register" &&
+                                <div className={styles.usernameInput}>
+                                    <label htmlFor="username">Username</label>
+                                    <input id="username"
+                                        type="text"
+                                        value={userName}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        required />
+                                </div>
+                            }
 
                             <div className={styles.emailInput}>
                                 <label htmlFor="email">Email</label>
@@ -48,8 +61,10 @@ export default function AuthPage() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     name="email"
-                                    required/>
+                                    required />
                             </div>
+
+
 
                             <div className={styles.passwordInput}>
                                 <label htmlFor="password">Password</label>
@@ -58,15 +73,22 @@ export default function AuthPage() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     name="password"
-                                    required/>
+                                    required />
                             </div>
                         </div>
 
                         <div>
-                            <button className={styles.button} type="submit">Sign Up</button>
+                            <button className={styles.button} type="submit">{mode == "register" ? "Sign Up" : "Log In"}</button>
                         </div>
 
                     </form>
+
+                    {
+                        mode == "register" ?
+                            <span>Already have an account? <a onClick={() => setMode("login")}> <u>Log in</u></a></span>
+                            :
+                            <span>Do not have an account? <a onClick={() => setMode("register")}> <u>Register</u></a></span>
+                    }
 
 
                 </div>
