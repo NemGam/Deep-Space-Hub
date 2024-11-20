@@ -6,11 +6,12 @@ import { useAuth } from "../../hooks/useAuth";
 
 export default function ProfilePage() {
     const { username } = useParams();
-    const { profile } = useAuth();
+    const { user, profile, setProfile } = useAuth();
     const [userProfile, setUserProfile] = useState((profile && (username === profile.username)) ? profile : null);
     const [profileOwner, setProfileOwner] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+    const [newPfP, setNewPfp] = useState("");
 
     useEffect(() => {
         setProfileOwner(profile && (profile.username === username));
@@ -43,12 +44,30 @@ export default function ProfilePage() {
         window.location.reload();
     }
 
+    const handleUpdateProfilePicture = async () => {
+        if (newPfP.length == 0) return;
+        await databaseService.changeProfilePicture(user.id, newPfP);
+        //TODO: FIX THIS MESS!
+        setUserProfile({...profile, profile_picture: newPfP});
+        setProfile({...profile, profile_picture: newPfP});
+        localStorage.setItem("profile", JSON.stringify({...profile, profile_picture: newPfP}));
+        console.log("Updated!");
+    }
+
     return (
         <div className={styles.profileWrapper}>
             <div className={styles.profile}>
                 { !isLoading &&
                     <>
                         <img className={styles.profilePicture} src={userProfile.profile_picture}></img>
+                        {
+                            profileOwner && 
+                            <div className={styles.updatePfp}>
+                                <input type="url" value={newPfP} onChange={(e) => setNewPfp(e.target.value)} />
+                                <button onClick={handleUpdateProfilePicture}>Update PfP</button>
+                            </div>
+                        }
+                        
                         <h1>{userProfile.username}</h1>
                     </>
 

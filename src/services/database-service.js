@@ -144,6 +144,11 @@ const logOut = async () => {
     if (error) console.error(error);
 }
 
+const changeProfilePicture = async (userId, newUrl) => {
+    console.log(userId, newUrl);
+    const { error } = await supabase.from('profiles').update({ profile_picture: newUrl }).eq('user_id', userId);
+    if (error) console.error(error);
+}
 
 export default {
     getPosts, 
@@ -158,5 +163,6 @@ export default {
     logIn,
     fetchProfile, 
     fetchAuthUserProfile, 
-    logOut
+    logOut,
+    changeProfilePicture
 }

@@ -12,9 +12,22 @@
 
 .profilePicture{
     border-radius: 100%;
+    max-width: 220px;
+    max-height: 220px;
 }
 
 .profileWrapper{
     display: flex;
     justify-content: center;
+}
+
+.updatePfp{
+    margin: 10px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profileWrapper button{
+    margin-top: auto;
 }

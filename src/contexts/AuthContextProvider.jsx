@@ -52,7 +52,7 @@ function AuthProvider({ children }) {
     }, []);
 
 
-    return <AuthContext.Provider value={{ user, session, profile }}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={{ user, session, profile, setProfile }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;
