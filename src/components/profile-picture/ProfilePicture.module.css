@@ -1,0 +1,38 @@
+.profilePicture > button:hover{
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.482);
+    color: white;
+}
+
+.profilePicture > img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    pointer-events: none;
+}
+
+.profilePicture{
+    position: relative;
+    border-radius: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+    border: white 1px solid;
+}
+
+.profilePicture > button{
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    cursor: pointer;
+    background-color: transparent;
+    color: transparent;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 40px; 
+    width: 100%;
+    height: 100%;
+}

@@ -18,7 +18,7 @@ function AuthProvider({ children }) {
             {
 
                 const { data, error } = await databaseService.fetchAuthUserProfile(session.user.id);
-                if (data.error)
+                if (error)
                 {
                     console.error("Error fetching profile:", error.message);
                 }

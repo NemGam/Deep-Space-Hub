@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { usePost } from "../../hooks/usePost";
 import { useAuth } from "../../hooks/useAuth";
+import ProfilePicture from "../../components/profile-picture/ProfilePicture";
 
 export default function FullPost() {
     const { postId } = useParams();
@@ -91,10 +92,14 @@ export default function FullPost() {
         <>
             <div className={styles.postWrapper}>
 
-                {post && <><div className={styles.userProfile}>
-                    <img className={styles.profilePicture} src={`${post.profile_picture}` || null} />
-                    <h3 className="less-important">{post?.username || "Anonymous"}</h3>
-                </div>
+                {post && <>
+                    <div className={styles.userProfile}>
+                        <div className={styles.profilePicture}>
+                            <ProfilePicture src={`${post.profile_picture}`} isClickable onClick={() => navigate(`/users/${post?.username}`)} />
+                        </div>
+
+                        <h3 className="less-important">{post?.username || "Anonymous"}</h3>
+                    </div>
 
                     <div className={styles.post}>
                         <div className={styles.mainPart}>

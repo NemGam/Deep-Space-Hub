@@ -10,11 +10,12 @@
     border-radius: 20px;
 }
 
-.profilePicture{
-    border-radius: 100%;
-    max-width: 220px;
-    max-height: 220px;
+.profilePicture:focus-visible{
+    border: white 4px solid;
 }
+
+
+
 
 .profileWrapper{
     display: flex;
@@ -28,6 +29,9 @@
     gap: 10px;
 }
 
-.profileWrapper button{
+.logoutBtn{
     margin-top: auto;
 }
+
+
+
