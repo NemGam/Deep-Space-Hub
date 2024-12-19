@@ -8,6 +8,7 @@ import { PostProvider } from './contexts/PostContextProvider';
 import AuthPage from './pages/auth-page/AuthPage';
 import AuthProvider from './contexts/AuthContextProvider';
 import ProfilePage from './pages/profile-page/ProfilePage';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
     return (
         <>
             <PostProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
                 <div className={styles.app}>
                     {routes}
                 </div>

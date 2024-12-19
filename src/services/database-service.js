@@ -21,6 +21,12 @@ const signUp = async (username, email, password) => {
     const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options:{
+            data:{
+                username: username
+            }
+        }
+        
     })
 
     if (error)
@@ -84,8 +90,8 @@ const updateGravity = async (id, gravity) => {
     if (error) console.error(error);
 }
 
-const createPost = async (title, content, img_url, author) => {
-    const { error } = await supabase.from('posts').insert({ title: title, content: content, img_url: img_url, author: author });
+const createPost = async (title, content, img_url, authorIdId) => {
+    const { error } = await supabase.from('posts').insert({ title: title, content: content, img_url: img_url, authorId: authorId });
     if (error)
     {
         console.error(error);
@@ -111,15 +117,9 @@ const getComments = async (postId) => {
     return data;
 }
 
-const createComment = async (postId, content, author) => {
-    const { error } = await supabase.from('Comments').insert({ parent_post: postId, author: author, content: content });
+const createComment = async (postId, content, authorId) => {
+    const { error } = await supabase.from('Comments').insert({ parent_post: postId, authorId: authorId, content: content });
     if (error) console.error(error);
-}
-
-//Fetches someone's profile
-const fetchAuthUserProfile = async (userId) => {
-    const { data, error } = await supabase.from('profiles').select().eq('user_id', userId).single();
-    return { data, error };
 }
 
 //Fetches the profile by id of authenticated user
@@ -128,13 +128,13 @@ const fetchProfile = async (username) => {
     {
         const { data, error } = await supabase.from('public_profiles').select().eq('username', username).single();
         if (error) throw new Error(error);
-        return { data: data, error: null };
+        return {data: data};
     }
     catch (err)
     {
         if (err.code === "PGRST116")
         {
-            return { data: null, error: "No users found" };
+            return {error: "No users found" };
         }
     }
 }
@@ -144,8 +144,7 @@ const logOut = async () => {
     if (error) console.error(error);
 }
 
-const changeProfilePicture = async (userId, newUrl) => {
-    console.log(userId, newUrl);
+const changeProfilePicture = async ({userId, newUrl}) => {
     const { error } = await supabase.from('profiles').update({ profile_picture: newUrl }).eq('user_id', userId);
     if (error) console.error(error);
 }
@@ -162,7 +161,6 @@ export default {
     signUp, 
     logIn,
     fetchProfile, 
-    fetchAuthUserProfile, 
     logOut,
     changeProfilePicture
 }

@@ -7,41 +7,39 @@ import PopupWindow from "../../components/popup-window/PopupWindow";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProfilePicture from "../../components/profile-picture/ProfilePicture";
+import { useFetchProfile } from "../../hooks/useFetchProfile";
 
 export default function ProfilePage() {
     const { username } = useParams();
-    const { user, profile, setProfile } = useAuth();
-    const [userProfile, setUserProfile] = useState((profile && (username === profile.username)) ? profile : null);
-    const [profileOwner, setProfileOwner] = useState();
-    const [isLoading, setIsLoading] = useState(true);
+    const { user, authProfile, authIsLoading, updateProfilePicture } = useAuth();
+    const {data: displayedUser, isLoading: isUserLoading, error: displayedUserError, isFetching} = useFetchProfile(username);
+    
+    const [isProfileOwner, setIsProfileOwner] = useState();
     const navigate = useNavigate();
     const [newPfP, setNewPfp] = useState("");
     const [isPopupVisible, setIsPopupVisible] = useState(false);
 
+    
+    
     useEffect(() => {
-        setProfileOwner(profile && (profile.username === username));
-    }, [username, profile])
+        setIsProfileOwner(authProfile && (authProfile.username === username));
+        console.log("Looking at ", displayedUser?.data);
+    }, [username, displayedUser, authProfile])
+    
+    if (isFetching){
+        console.log("FETCHING THE USER");
+    }
 
-    useEffect(() => {
-        console.log("Looking at user");
-        if (userProfile)
-        {
-            setIsLoading(false);
-            return;
-        }
+    if (displayedUserError) {
+        console.error(displayedUserError);
+        return;
+    }
+    if (isUserLoading || authIsLoading){
+        console.log("Loading");
+        return;
+    }
+    
 
-        console.log("Fetching");
-        const getProfileData = async () => {
-            setIsLoading(true);
-            const { data, error } = await databaseService.fetchProfile(username);
-            if (!data) console.log(error);
-            console.log(data);
-            setUserProfile(data);
-            setIsLoading(false);
-        };
-
-        getProfileData();
-    }, [username]);
 
     const handleLogOut = async () => {
         await databaseService.logOut();
@@ -51,32 +49,31 @@ export default function ProfilePage() {
     }
 
     const handleUpdateProfilePicture = async () => {
+        if (!isProfileOwner) return;
+
         if (newPfP.length == 0) return;
-        await databaseService.changeProfilePicture(user.id, newPfP);
-        //TODO: FIX THIS MESS!
-        setUserProfile({ ...profile, profile_picture: newPfP });
-        setProfile({ ...profile, profile_picture: newPfP });
-        localStorage.setItem("profile", JSON.stringify({ ...profile, profile_picture: newPfP }));
-        setNewPfp("");
+        
+        //Update pfp
+        await updateProfilePicture(user.id, newPfP);
+
         setIsPopupVisible(false);
-        console.log("Updated!");
     }
 
     return (
         <div className={styles.profileWrapper}>
             <div className={styles.profile}>
-                {!isLoading &&
+                {!isUserLoading &&
                     <>
                         <div style={{width: "180px", height: "180px"}}>
-                            <ProfilePicture src={userProfile.profile_picture} 
-                                            isClickable={profileOwner} 
+                            <ProfilePicture src={displayedUser.data.profile_picture} 
+                                            isClickable={isProfileOwner} 
                                             onClick={() => setIsPopupVisible(true)}>
                                 <FontAwesomeIcon icon={faEdit} />
                             </ProfilePicture>
                         </div>
                         
                         
-                        <h1>{userProfile.username}</h1>
+                        <h1>{displayedUser.data.username}</h1>
                     </>
                 }
                 <PopupWindow isVisible={isPopupVisible}>
@@ -89,7 +86,7 @@ export default function ProfilePage() {
                         </div>
                     </div>
                 </PopupWindow>
-                {profileOwner && <button onClick={handleLogOut} className={styles.logoutBtn}>Log out</button>}
+                {isProfileOwner && <button onClick={handleLogOut} className={styles.logoutBtn}>Log out</button>}
             </div>
         </div>
     );
